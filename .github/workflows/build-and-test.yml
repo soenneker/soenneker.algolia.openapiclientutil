@@ -38,7 +38,7 @@ jobs:
         run: dotnet build test/Soenneker.Algolia.OpenApiClientUtil.Tests/Soenneker.Algolia.OpenApiClientUtil.Tests.csproj --configuration Release --no-restore --verbosity minimal
 
       - name: Test
-        run: dotnet test test/Soenneker.Algolia.OpenApiClientUtil.Tests/Soenneker.Algolia.OpenApiClientUtil.Tests.csproj --configuration Release --no-build --no-restore --verbosity minimal
+        run: dotnet test --project test/Soenneker.Algolia.OpenApiClientUtil.Tests/Soenneker.Algolia.OpenApiClientUtil.Tests.csproj --configuration Release --no-build --no-restore --verbosity minimal
 
       - name: Pack
         run: dotnet pack src/Soenneker.Algolia.OpenApiClientUtil/Soenneker.Algolia.OpenApiClientUtil.csproj --configuration Release --no-build --no-restore --output . --verbosity minimal
