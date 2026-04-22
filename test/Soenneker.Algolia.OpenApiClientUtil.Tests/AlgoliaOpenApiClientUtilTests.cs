@@ -1,20 +1,19 @@
 using Soenneker.Algolia.OpenApiClientUtil.Abstract;
-using Soenneker.Tests.FixturedUnit;
-using Xunit;
+using Soenneker.Tests.HostedUnit;
 
 namespace Soenneker.Algolia.OpenApiClientUtil.Tests;
 
-[Collection("Collection")]
-public sealed class AlgoliaOpenApiClientUtilTests : FixturedUnitTest
+[ClassDataSource<Host>(Shared = SharedType.PerTestSession)]
+public sealed class AlgoliaOpenApiClientUtilTests : HostedUnitTest
 {
     private readonly IAlgoliaOpenApiClientUtil _openapiclientutil;
 
-    public AlgoliaOpenApiClientUtilTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
+    public AlgoliaOpenApiClientUtilTests(Host host) : base(host)
     {
         _openapiclientutil = Resolve<IAlgoliaOpenApiClientUtil>(true);
     }
 
-    [Fact]
+    [Test]
     public void Default()
     {
 
