@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,7 +15,6 @@ using Soenneker.Utils.AsyncSingleton;
 
 namespace Soenneker.Algolia.OpenApiClientUtil;
 
-///<inheritdoc cref="IAlgoliaOpenApiClientUtil"/>
 public sealed class AlgoliaOpenApiClientUtil : IAlgoliaOpenApiClientUtil
 {
     private readonly AsyncSingleton<AlgoliaOpenApiClient> _client;
@@ -26,10 +26,17 @@ public sealed class AlgoliaOpenApiClientUtil : IAlgoliaOpenApiClientUtil
             HttpClient httpClient = await httpClientUtil.Get(token).NoSync();
 
             var apiKey = configuration.GetValueStrict<string>("Algolia:ApiKey");
-            string authHeaderValueTemplate = configuration["Algolia:AuthHeaderValueTemplate"] ?? "Bearer {token}";
+            var applicationId = configuration.GetValueStrict<string>("Algolia:ApplicationId");
+            string authHeaderName = configuration["Algolia:AuthHeaderName"] ?? "X-Algolia-API-Key";
+            string authHeaderValueTemplate = configuration["Algolia:AuthHeaderValueTemplate"] ?? "{token}";
             string authHeaderValue = authHeaderValueTemplate.Replace("{token}", apiKey, StringComparison.Ordinal);
 
-            var requestAdapter = new HttpClientRequestAdapter(new GenericAuthenticationProvider(headerValue: authHeaderValue), httpClient: httpClient);
+            var additionalHeaders = new Dictionary<string, string>
+            {
+                ["X-Algolia-Application-Id"] = applicationId
+            };
+            var authenticationProvider = new GenericAuthenticationProvider(authHeaderName, authHeaderValue, additionalHeaders);
+            var requestAdapter = new HttpClientRequestAdapter(authenticationProvider, httpClient: httpClient);
 
             return new AlgoliaOpenApiClient(requestAdapter);
         });
@@ -40,18 +47,11 @@ public sealed class AlgoliaOpenApiClientUtil : IAlgoliaOpenApiClientUtil
         return _client.Get(cancellationToken);
     }
 
-    /// <summary>
-    /// Releases resources used by the current instance.
-    /// </summary>
     public void Dispose()
     {
         _client.Dispose();
     }
 
-    /// <summary>
-    /// Asynchronously releases resources used by the current instance.
-    /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
     public ValueTask DisposeAsync()
     {
         return _client.DisposeAsync();
