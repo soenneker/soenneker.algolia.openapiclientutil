@@ -15,6 +15,7 @@ using Soenneker.Utils.AsyncSingleton;
 
 namespace Soenneker.Algolia.OpenApiClientUtil;
 
+/// <inheritdoc cref="IAlgoliaOpenApiClientUtil" />
 public sealed class AlgoliaOpenApiClientUtil : IAlgoliaOpenApiClientUtil
 {
     private readonly AsyncSingleton<AlgoliaOpenApiClient> _client;
