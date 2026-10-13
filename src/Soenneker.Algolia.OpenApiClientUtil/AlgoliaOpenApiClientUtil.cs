@@ -26,8 +26,8 @@ public sealed class AlgoliaOpenApiClientUtil : IAlgoliaOpenApiClientUtil
         {
             HttpClient httpClient = await httpClientUtil.Get(token).NoSync();
 
-            var apiKey = configuration.GetValueStrict<string>("Algolia:ApiKey");
-            var applicationId = configuration.GetValueStrict<string>("Algolia:ApplicationId");
+            var apiKey = configuration.GetStringStrict("Algolia:ApiKey");
+            var applicationId = configuration.GetStringStrict("Algolia:ApplicationId");
             string authHeaderName = configuration["Algolia:AuthHeaderName"] ?? "X-Algolia-API-Key";
             string authHeaderValueTemplate = configuration["Algolia:AuthHeaderValueTemplate"] ?? "{token}";
             string authHeaderValue = authHeaderValueTemplate.Replace("{token}", apiKey, StringComparison.Ordinal);
