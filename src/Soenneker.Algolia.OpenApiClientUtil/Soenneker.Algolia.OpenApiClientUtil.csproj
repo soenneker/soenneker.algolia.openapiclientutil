@@ -46,6 +46,6 @@
     <ItemGroup>
         <PackageReference Include="Soenneker.Kiota.GenericAuthenticationProvider" Version="11.0.61" />
         <PackageReference Include="Soenneker.Algolia.HttpClients" Version="11.0.176" />
-        <PackageReference Include="Soenneker.Algolia.OpenApiClient" Version="11.0.85" />
+        <PackageReference Include="Soenneker.Algolia.OpenApiClient" Version="11.0.86" />
     </ItemGroup>
 </Project>
